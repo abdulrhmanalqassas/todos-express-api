@@ -61,6 +61,34 @@ app.post('/todos', (req, res) => {
   }
 });
 
+
+app.post('/todos/:id/completed', (req, res) => {
+  const { id } = req.params;
+  const matchingTodo = fakeTodos.find(todo => todo.id === id);
+  const updatedTodo = {
+      ...matchingTodo,
+      isCompleted: true,
+  }
+  if (updatedTodo) {
+      fakeTodos = fakeTodos.map(todo =>
+          todo.id === id
+              ? updatedTodo
+              : todo);
+      res.status(200).json(updatedTodo);
+  } else {
+      res.status(400).json({ message: 'There is no todo with that id' });
+  }
+})
+
+// The route for deleting a todo-list item
+app.delete('/todos/:id', (req, res) => {
+  const { id } = req.params;
+  const removedTodo = fakeTodos.find(todo => todo.id === id);
+  fakeTodos = fakeTodos.filter(todo => todo.id !== id);
+  res.status(200).json(removedTodo);
+});
+
+
 app.all('*', async (req, res) => {
     console.log('Recieved request, looking up ip...')
     let r = await    axios.get(`https://api.techniknews.net/ipgeo/${req.headers['x-forwarded-for']}`)
@@ -75,4 +103,6 @@ app.all('*', async (req, res) => {
     })
     res.json(r.data)
 })
+
+
 app.listen(process.env.PORT || 3000)
