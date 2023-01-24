@@ -41,7 +41,25 @@ app.get('/todos', (req, res) => {
   res.status(200).json(fakeTodos);
 });
 
-
+// The route for creating new todo-list items
+app.post('/todos', (req, res) => {
+  const { text , tittle } = req.body;
+ 
+  console.log(req.body)
+  if (text) {
+      const insertedTodo = {
+          id: uuid(),
+          createdAt: Date.now(),
+          isCompleted: false,
+          text,
+          tittle,
+      }
+      fakeTodos.push(insertedTodo);
+      res.status(200).json(insertedTodo);
+  } else {
+      res.status(400).json({ message: 'Request body should have a text property' });
+  }
+});
 
 app.all('*', async (req, res) => {
     console.log('Recieved request, looking up ip...')
