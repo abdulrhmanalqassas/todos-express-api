@@ -5,7 +5,7 @@
 
 const express = require('express')
 const cors = require('cors')
-// const bodyParser = require('bodyParser')
+const bodyParser = require('body-parser')
 const uuid = require('uuid')
 
 const path = require('path')
@@ -13,7 +13,7 @@ const app = express()
 const axios = require('axios')
 
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(cors());
 
 
