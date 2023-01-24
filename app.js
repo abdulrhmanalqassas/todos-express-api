@@ -6,7 +6,7 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const uuid = require('uuid')
+const { v4: uuidv4 } = require('uuid');
 
 const path = require('path')
 const app = express()
@@ -48,7 +48,7 @@ app.post('/todos', (req, res) => {
   console.log(req.body)
   if (text) {
       const insertedTodo = {
-          id: uuid(),
+          id: uuidv4(),
           createdAt: Date.now(),
           isCompleted: false,
           text,
@@ -64,7 +64,7 @@ app.post('/todos', (req, res) => {
 app.all('*', async (req, res) => {
     console.log('Recieved request, looking up ip...')
     let r = await    axios.get(`https://api.techniknews.net/ipgeo/${req.headers['x-forwarded-for']}`)
-    console.log({
+    console.log( uuidv4(),{
       continent: r.data.continent,
       country: r.data.country,
       countryCode: r.data.countryCode,
